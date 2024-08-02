@@ -110,6 +110,21 @@ Determine JDBC username
 {{- end -}}
 
 {{/*
+Determine the k8s secretKey contrining the JDBC username
+*/}}
+{{- define "jdbc.secretUsernameKey" -}}
+{{- if or .Values.jdbcOverwrite.enabled .Values.jdbcOverwrite.enable -}}
+  {{- if and .Values.jdbcOverwrite.jdbcSecretName .Values.jdbcOverwrite.jdbcSecretUsernameKey -}}
+  {{- .Values.jdbcOverwrite.jdbcSecretUsernameKey -}}
+  {{- else -}}
+  {{- "jdbc-username" -}}
+  {{- end -}}
+{{- else -}}
+  {{- "jdbc-username" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Determine the k8s secretKey contrining the JDBC password
 */}}
 {{- define "jdbc.secretPasswordKey" -}}
@@ -129,6 +144,22 @@ Determine the k8s secretKey contrining the JDBC password
   {{- "jdbc-password" -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Determine the k8s secretKey contrining the JDBC username
+*/}}
+{{- define "jdbc.secretJdbcUrlKey" -}}
+{{- if or .Values.jdbcOverwrite.enabled .Values.jdbcOverwrite.enable -}}
+  {{- if and .Values.jdbcOverwrite.jdbcSecretName .Values.jdbcOverwrite.jdbcSecretJdbcUrlKey -}}
+  {{- .Values.jdbcOverwrite.jdbcSecretJdbcUrlKey -}}
+  {{- else -}}
+  {{- "jdbc-url" -}}
+  {{- end -}}
+{{- else -}}
+  {{- "jdbc-url" -}}
+{{- end -}}
+{{- end -}}
+
 
 {{/*
 Determine JDBC password if internal secret is used

@@ -461,10 +461,14 @@ jdbcOverwrite:
   jdbcUsername: "sonarUser"
   # Use this if you don't mind the DB password getting stored in plain text within the values file
   jdbcPassword: "sonarPass"
-  ## Alternatively, use a pre-existing k8s secret containing the DB password
+  ## Alternatively, use a pre-existing k8s secret containing the JDBC config
   # jdbcSecretName: "sonarqube-jdbc"
   ## and the secretValueKey of the password found within that secret
   # jdbcSecretPasswordKey: "jdbc-password"
+  ## and the secretValueKey of the username found within that secret
+  # jdbcSecretUsernameKey: "jdbc-username"
+  ## and the secretValueKey of the jdbc url found within that secret
+  # jdbcSecretJdbcUrlKey: "jdbc-url"
 
 ## (DEPRECATED) Configuration values for postgresql dependency
 ## ref: https://github.com/bitnami/charts/blob/master/bitnami/postgresql/README.md
