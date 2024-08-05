@@ -1,3 +1,6 @@
+{{- if not .Values.jdbcOverwrite.jdbcSecretName }}
+{{- if not .Values.jdbcOverwrite.jdbcSecretUsernameKey }}
+{{- if .Values.jdbcOverwrite.jdbcSecretJdbcUrlKey }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -10,3 +13,6 @@ data:
   {{- else if and .Values.postgresql.service.port .Values.postgresql.postgresqlDatabase }}
   SONAR_JDBC_URL: "jdbc:postgresql://{{ template "postgresql.hostname" . }}:{{- .Values.postgresql.service.port -}}/{{- .Values.postgresql.postgresqlDatabase -}}"
   {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

@@ -254,6 +254,24 @@ spec:
             secretKeyRef:
               name: {{ include "jdbc.secret" . }}
               key: {{ include "jdbc.secretPasswordKey" . }}
+        {{- if or .Values.jdbcOverwrite.enabled .Values.jdbcOverwrite.enable }}
+        {{- if .Values.jdbcOverwrite.jdbcSecretName }}
+        {{- if .Values.jdbcOverwrite.jdbcSecretUsernameKey }}
+        - name: SONAR_JDBC_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "jdbc.secret" . }}
+              key: {{ include "jdbc.secretUsernameKey" . }}
+        {{- end }}
+        {{- if .Values.jdbcOverwrite.jdbcSecretJdbcUrlKey }}
+        - name: SONAR_JDBC_URL
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "jdbc.secret" . }}
+              key: {{ include "jdbc.secretJdbcUrlKey" . }}
+        {{- end }}
+        {{- end }}
+        {{- end }}
         - name: SONAR_WEB_SYSTEMPASSCODE
           valueFrom:
             secretKeyRef:
@@ -266,8 +284,14 @@ spec:
             {{- end }}
         {{- (include "sonarqube.combined_env" . | fromJsonArray) | toYaml | trim | nindent 8 }}
       envFrom:
+        {{- if not .Values.jdbcOverwrite.jdbcSecretName }}
+        {{- if not .Values.jdbcOverwrite.jdbcSecretUsernameKey }}
+        {{- if not .Values.jdbcOverwrite.jdbcSecretJdbcUrlKey }}
         - configMapRef:
             name: {{ include "sonarqube.fullname" . }}-jdbc-config
+        {{- end }}
+        {{- end }}
+        {{- end }}
         {{- range .Values.extraConfig.secrets }}
         - secretRef:
             name: {{ . }}
